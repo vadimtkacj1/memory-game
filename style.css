@@ -1,0 +1,273 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    height: 100vh;
+    background: #060AB2;
+  }
+  
+  .memory-game {
+    width: 640px;
+    height: 640px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    perspective: 1000px;
+  }
+  
+  .memory-card {
+    width: calc(25% - 10px);
+    height: calc(33.333% - 10px);
+    margin: 5px;
+    position: relative;
+    transform: scale(1);
+    transform-style: preserve-3d;
+    transition: transform .5s;
+    box-shadow: 1px 1px 1px rgba(0,0,0,.3);
+  }
+  
+  .memory-card:active {
+    transform: scale(0.97);
+    transition: transform .2s;
+  }
+  
+  .memory-card.flip {
+    transform: rotateY(180deg);
+  }
+  
+  .front-face,
+  .back-face {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    position: absolute;
+    border-radius: 5px;
+    background: #1C7CCC;
+    backface-visibility: hidden;
+  }
+  
+  .front-face {
+    transform: rotateY(180deg);
+  }
+
+/* .s-main {
+    width: 310px;
+    height: 310px;
+}
+
+.s-main .s:active {
+    transform: rotateY(180deg);
+}
+
+.s {
+    transition: 2s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.color {
+    background-color: red;
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    backface-visibility: hidden;
+    border: 1px solid green;
+    vertical-align: middle;
+}
+
+.s img {
+    width: 300px;
+    height: 300px;
+    transform: rotateY(180deg);
+    position: absolute;
+} */
+
+.wrapper-win {
+    position: fixed;
+    background: rgba(6, 10, 178, 0.5);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100000;
+    font-weight: bold;
+    opacity: 0;
+    top: 0px;
+    left: 0px;
+    transition: all 1s;
+}
+
+.win_button {
+    padding: 20px 40px 20px 40px;
+     background-color: #1C7CCC;
+     color: #fff;
+     position: relative;
+     border-radius: 5px;
+     margin-top: 50px;
+     cursor: pointer;
+}
+
+.win_heading {
+    font-size: 30px;
+    color: #ffffff;
+}
+
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 90%;
+  width: 100%;
+  justify-content: center;
+}
+
+.restart {
+  border: 2px solid #ffff00;
+  padding: 10px 25px;
+  color: #ffff00;
+  cursor: pointer;
+  font-size: 20px;
+  margin-bottom: 20px;
+  margin-top: 50px;
+  font-weight: bold;
+  text-transform: uppercase;
+
+}
+
+.controllers {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 640px;
+  padding: 0px 20px;
+}
+
+.restart:active {
+  background-color: #ffff00;
+  color: #060AB2;
+}
+
+.timer {
+  background-color: #ffff00;
+  color: #060AB2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  padding: 10px;
+  width: 55px;
+  height: 55px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+@media (max-width: 700px) {
+  .memory-game {
+    width: 100%;
+    height: 100%;
+    perspective: 1000px;
+  }
+  
+  .game {
+    padding: 0px 20px;
+  }
+
+  .restart {
+    margin-bottom: 40px;
+  }
+
+  .controllers {
+    width: 100%;
+    padding: 0px 20px;
+  }
+
+  .win_heading {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 550px) {
+  .memory-card {
+    height: calc(33.333% - 40px);
+  }
+
+  .game {
+    padding: 0px 10px;
+  }
+
+  .game {
+    height: 90%;
+  }
+
+  .restart {
+    font-size: 19px;
+    margin-bottom: 30px 0px;
+  }
+
+  .controllers {
+    padding: 0px 15px;
+  }
+
+  .timer {
+    width: 45px;
+    height: 45px;
+    font-size: 19px;
+  }
+
+  .win_button {
+    padding: 10px 20px 10px 20px;
+    margin-top: 40px;
+  }
+
+  .win_heading {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 480px) {
+  .memory-card {
+    height: calc(33.333% - 55px);
+    width: 30.333%;
+  }
+
+  .game {
+    height: 85%;
+  }
+
+  .restart {
+    font-size: 18px;
+  }
+
+  .controllers {
+    padding: 0px 10px;
+  }
+
+  .timer {
+    font-size: 18px;
+  }
+
+  .win_button {
+    padding: 10px 15px 10px 15px;
+    margin-top: 30px;
+  }
+
+  .win_heading {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 400px) {
+  .game {
+    height: 75%;
+  }
+
+  .restart {
+    font-size: 17px;
+    margin: 40px 0px 45px 0px;
+  }
+}
