@@ -33,7 +33,7 @@ class ManagerGame {
   #second;
   #timer = new Timer(
     this.#second,
-    this.popUpWindow.bind(null, "Время истекло")
+    this.#popUpWindow.bind(null, "Время истекло")
   );
 
   constructor(boardElement, arrayImg, formatImg, elementTimer, second = 30) {
@@ -69,11 +69,11 @@ class ManagerGame {
     this.#numberOfFlippedCards = 0;
   }
 
-  resettingCards() {
+  #resettingCards() {
     [this.#firstCard, this.#secondCard] = [null, null];
   }
 
-  popUpWindow(textContent) {
+  #popUpWindow(textContent) {
     const divParent = document.createElement("div");
     const divHeading = document.createElement("div");
     const divButton = document.createElement("div");
@@ -125,17 +125,17 @@ class ManagerGame {
       return setTimeout(() => {
         this.#firstCard.flip("flip");
         this.#secondCard.flip("flip");
-        this.resettingCards();
+        this.#resettingCards();
         this.#cardFlipCheck = true;
       }, 1000);
     }
 
     this.#numberOfFlippedCards++;
-    this.resettingCards();
+    this.#resettingCards();
 
     if (this.#numberOfFlippedCards !== this.arrayImgLength) return;
 
-    this.popUpWindow("Поздравляю вы победили!");
+    this.#popUpWindow("Поздравляю вы победили!");
     this.#timer.stop();
   }
 }

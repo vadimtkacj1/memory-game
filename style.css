@@ -53,38 +53,6 @@
     transform: rotateY(180deg);
   }
 
-/* .s-main {
-    width: 310px;
-    height: 310px;
-}
-
-.s-main .s:active {
-    transform: rotateY(180deg);
-}
-
-.s {
-    transition: 2s;
-    transform-style: preserve-3d;
-    position: relative;
-}
-
-.color {
-    background-color: red;
-    width: 300px;
-    height: 300px;
-    position: absolute;
-    backface-visibility: hidden;
-    border: 1px solid green;
-    vertical-align: middle;
-}
-
-.s img {
-    width: 300px;
-    height: 300px;
-    transform: rotateY(180deg);
-    position: absolute;
-} */
-
 .wrapper-win {
     position: fixed;
     background: rgba(6, 10, 178, 0.5);
