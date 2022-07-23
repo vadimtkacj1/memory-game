@@ -18,28 +18,32 @@ class Card {
   }
 
   createCard() {
-    const div = document.createElement("div");
-    const imgFront = document.createElement("img");
-    const imgBack = document.createElement("img");
+    return new Promise((resolve) => {
+      const div = document.createElement("div");
+      const imgFront = document.createElement("img");
+      const imgBack = document.createElement("img");
 
-    div.classList.add("memory-card");
-    div.dataset.name = this.#img;
+      div.classList.add("memory-card");
+      div.dataset.name = this.#img;
 
-    imgFront.classList.add("front-face");
-    imgFront.src = `img/${this.#img}.${this.#formatPhoto}`;
-    imgFront.alt = this.#img;
+      imgFront.classList.add("front-face");
+      imgFront.src = `img/${this.#img}.${this.#formatPhoto}`;
+      imgFront.alt = this.#img;
 
-    imgBack.classList.add("back-face");
-    imgBack.src = `img/js-badge.${this.#formatPhoto}`;
-    imgBack.alt = "js-badge";
+      imgBack.classList.add("back-face");
+      imgBack.src = `img/js-badge.${this.#formatPhoto}`;
+      imgBack.alt = "js-badge";
 
-    div.append(imgBack);
-    div.append(imgFront);
+      div.append(imgBack);
+      div.append(imgFront);
 
-    div.connectedCard = this;
-    this.#element = div;
+      div.connectedCard = this;
+      this.#element = div;
 
-    return div;
+      imgFront.onload = () => {
+        resolve(div);
+      };
+    });
   }
 
   flipAnimation(nameCss) {

@@ -1,32 +1,33 @@
 class Timer {
-  #second;
-  #workSecond = this.#second;
+  #seconds;
+  #workSeconds = this.#seconds;
   #interval = null;
-  #showFn = null;
 
-  constructor(second = 30, func) {
-    this.#second = second;
-    this.#showFn = func;
+  constructor(seconds = 30) {
+    this.#seconds = seconds;
   }
 
   start(element) {
     if (!element) return;
 
-    element.innerHTMl = this.#workSecond;
+    if (this.#interval) clearInterval(this.#interval);
 
-    this.#interval = setInterval(() => {
-      element.textContent = --this.#workSecond;
+    element.innerHTMl = this.#workSeconds;
 
-      if (this.#workSecond === 0) {
-        clearInterval(this.#interval);
-        this.#showFn();
-        this.stop();
-      }
-    }, 1000);
+    return new Promise((resolve) => {
+      this.#interval = setInterval(() => {
+        element.textContent = --this.#workSeconds;
+
+        if (this.#workSeconds === 0) {
+          clearInterval(this.#interval);
+          resolve();
+        }
+      }, 1000);
+    });
   }
 
   restart() {
-    this.#workSecond = this.#second;
+    this.#workSeconds = this.#seconds;
     clearInterval(this.#interval);
   }
 

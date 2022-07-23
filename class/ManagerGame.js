@@ -1,5 +1,6 @@
 import Desk from "./Desk.js";
 import Timer from "./Timer.js";
+import preloader from "../preloader.js";
 
 class ManagerGame {
   get boardElement() {
@@ -30,43 +31,88 @@ class ManagerGame {
   #animationElement = null;
   #elementTimer = null;
   #animationCheck = false;
-  #second;
-  #timer = new Timer(
-    this.#second,
-    this.#popUpWindow.bind(null, "Время истекло")
-  );
+  #seconds;
+  #preloaderElement;
+  #timer = new Timer(this.#seconds);
 
-  constructor(boardElement, arrayImg, formatImg, elementTimer, second = 30) {
+  constructor(
+    boardElement,
+    arrayImg,
+    formatImg,
+    elementTimer,
+    preloaderElement,
+    seconds = 30
+  ) {
     this.#boardElement = boardElement;
     this.#arrayImg = arrayImg;
     this.#formatImg = formatImg;
     this.#elementTimer = elementTimer;
-    this.#second = second;
+    this.#preloaderElement = preloaderElement;
+    this.#seconds = seconds;
   }
 
-  startGame() {
-    this.#elementTimer.textContent = this.#second;
+  async startGame() {
+    const cards = this.#cards();
+
+    this.#addCards(cards);
+
+    await preloader();
+    this.#preloaderElement.style.opacity = "0";
+    this.#preparingGame(cards);
+
+    await new Promise((resolve) => setTimeout(resolve, 800));
+    this.#preloaderElement.remove();
+  }
+
+  restartGame() {
+    const cards = this.#cards();
+
+    this.#addCards(cards);
+    this.#preparingGame(cards);
+  }
+
+  #cards() {
+    const desk = new Desk(this.#arrayImg);
+    const promiseCards = desk.createCards(this.#formatImg);
+
+    return Promise.all(promiseCards);
+  }
+
+  #preparingGame(cards) {
+    setTimeout(async () => {
+      const arrayCards = await cards;
+      arrayCards.forEach((elem) => elem.connectedCard.flip("flip"));
+
+      await this.#flipCardsEndAnimation(arrayCards);
+      this.#cardFlipCheck = true;
+      this.#animationCheck = true;
+
+      await this.#timer.start(this.#elementTimer);
+      this.#popUpWindow("Время истекло");
+      this.#timer.stop();
+    }, 1000);
+  }
+
+  #flipCardsEndAnimation(cards) {
+    return new Promise((resolve) => {
+      cards[0].addEventListener("transitionend", resolve);
+    });
+  }
+
+  async #addCards(cards) {
+    this.#elementTimer.textContent = this.#seconds;
     this.boardElement.innerHTML = "";
+    this.#numberOfFlippedCards = 0;
     this.#animationCheck = false;
+    this.#cardFlipCheck = false;
 
     this.#timer.restart();
-    this.#timer.start(this.#elementTimer);
 
-    const desk = new Desk(this.#arrayImg);
-    const cards = desk.createCards(this.#formatImg);
-
-    cards.forEach((e) => {
-      e.connectedCard.flip("flip");
-      this.boardElement.append(e);
+    const arrayCards = await cards;
+    arrayCards.forEach((elem) => {
+      elem.connectedCard.flip("flip");
+      this.boardElement.append(elem);
     });
-
-    setTimeout(() => {
-      cards.forEach((e) => e.connectedCard.flip("flip"));
-      this.#animationCheck = true;
-      this.#cardFlipCheck = true;
-    }, 1000);
-
-    this.#numberOfFlippedCards = 0;
   }
 
   #resettingCards() {
@@ -115,7 +161,6 @@ class ManagerGame {
     if (!this.#firstCard) return (this.#firstCard = card);
     if (!this.#secondCard && this.#firstCard.element !== card.element)
       this.#secondCard = card;
-
     if (
       this.#firstCard.element.getAttribute("data-name") !==
       this.#secondCard.element.getAttribute("data-name")
